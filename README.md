@@ -7,7 +7,7 @@ AI 버츄얼 스트리머 "Neuro-sama"를 클론 하는 프로젝트입니다.
 ![はかせ](.github/images/profile.png)
 
 만화 "일상"의 주인공 중 한명입니다. 자세한건 나무위키 참고!
-> https://namu.wiki/w/%EC%9D%BC%EC%83%81(%EB%A7%8C%ED%99%94)
+> https://namu.wiki/w/일상(만화)
 
 ## License
 위 프로젝트는 LGPL-2.1 라이선스를 적용합니다.
