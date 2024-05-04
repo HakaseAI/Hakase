@@ -18,6 +18,10 @@ AI 버츄얼 스트리머 "Neuro-sama"를 클론 하는 프로젝트입니다.
 - Python 3.10
 - Windows Subsystem on Linux (WSL2)
 
+## Convention
+- [PEP 8 - Style Guide for Python Code](https://peps.python.org/pep-0008/)
+- [Conventional Commits v1.0.0](https://www.conventionalcommits.org/ko/v1.0.0/)
+
 ## 프로젝트 참여자
 > 프로젝트 공동 리더
 - [@zeroday0619](https://github.com/zeroday0619)
