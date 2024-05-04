@@ -1,0 +1,48 @@
+name: Lint
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install Wheel
+        run: pip install wheel
+
+      - name: Install Cython
+        run: pip install Cython
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Python dev dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          black: true
+          flake8: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
