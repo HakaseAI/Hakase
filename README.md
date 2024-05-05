@@ -11,11 +11,11 @@ AI 버츄얼 스트리머 "Neuro-sama"를 클론 하는 프로젝트입니다.
 
 ## 개발 환경
 > Recommended development environment
-- Python 3.10
+- Python 3.12
 - Linux, macOS
 
 > Minimal development environment
-- Python 3.10
+- Python 3.12
 - Windows Subsystem on Linux (WSL2)
 
 ## Convention
