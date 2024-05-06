@@ -2,7 +2,12 @@ import json
 import os.path
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    TextStreamer,
+)
 
 
 class LLama3(object):
@@ -24,10 +29,20 @@ class LLama3(object):
                         f"{accelerate_engine} is not a valid accelerate_engine"
                     )
 
-        self.model = AutoModelForCausalLM.from_pretrained(self.model_id).to(
-            self.accelerate_engine
+        self.bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=torch.bfloat16,
         )
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_id)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            self.model_id, quantization_config=self.bnb_config, device_map="auto"
+        )
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.model_id, add_special_tokens=True
+        )
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.tokenizer.padding_side = "right"
         self.streamer = TextStreamer(
             self.tokenizer, skip_prompt=True, skip_special_tokens=True
         )
@@ -48,13 +63,18 @@ class LLama3(object):
 
     def generate_text(self, instruction: str) -> str:
         self.generate_instruction(instruction=instruction)
-        inputs = self.tokenizer.apply_chat_template(
-            self.prompt, tokenize=True, return_tensors="pt"
-        ).to(self.accelerate_engine)
-        outputs = self.model.generate(
-            inputs,
-            streamer=self.streamer,
-            max_new_tokens=1024,
-            pad_token_id=self.tokenizer.eos_token_id,
+        prompt = self.tokenizer.apply_chat_template(
+            self.prompt, tokenize=False, add_generation_prompt=True
         )
-        print(outputs)
+        outputs = self.model.generate(
+            prompt,
+            streamer=self.streamer,
+            do_sample=True,
+            temperature=0.4,
+            top_p=0.9,
+            eos_token_id=[
+                self.tokenizer.eos_token_id,
+                self.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
+            ],
+        )
+        print(outputs[0]["generated_text"][len(prompt) :])
