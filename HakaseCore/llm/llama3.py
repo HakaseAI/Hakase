@@ -41,7 +41,6 @@ class LLama3(object):
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_id, add_special_tokens=True
         )
-        self.tokenizer.pad_token = self.tokenizer.eos_token
         self.tokenizer.padding_side = "right"
         self.streamer = TextStreamer(
             self.tokenizer, skip_prompt=True, skip_special_tokens=True
