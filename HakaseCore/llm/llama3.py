@@ -30,7 +30,7 @@ class LLama3(object):
                     )
 
         bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
+            load_in_8bit=True,
             bnb_4bit_quant_type="nf4",
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=torch.bfloat16,
@@ -71,7 +71,7 @@ class LLama3(object):
             do_sample=True,
             temperature=0.4,
             top_p=0.9,
-            max_new_tokens=10000,
+            max_new_tokens=50,
             eos_token_id=[
                 self.tokenizer.eos_token_id,
                 self.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
