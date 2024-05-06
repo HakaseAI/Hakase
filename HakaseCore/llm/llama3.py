@@ -2,12 +2,10 @@ import json
 import os.path
 
 import torch
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    BitsAndBytesConfig,
-    TextStreamer,
-)
+from transformers import AutoModelForCausalLM
+from transformers import AutoTokenizer
+from transformers import BitsAndBytesConfig
+from transformers import TextStreamer
 
 
 class LLama3(object):
@@ -41,10 +39,8 @@ class LLama3(object):
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_id, add_special_tokens=True
         )
+        self.tokenizer.pad_token = self.tokenizer.eos_token
         self.tokenizer.padding_side = "right"
-        self.streamer = TextStreamer(
-            self.tokenizer, skip_prompt=True, skip_special_tokens=True
-        )
 
     def load_prompt(self) -> list[dict[str, str]]:
         # Get Hakase Project Path
@@ -67,7 +63,6 @@ class LLama3(object):
         )
         outputs = self.model.generate(
             prompt,
-            streamer=self.streamer,
             do_sample=True,
             temperature=0.4,
             top_p=0.9,
