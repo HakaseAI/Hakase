@@ -66,7 +66,7 @@ class LLama3(object):
         prompt = self.pipe.tokenizer.apply_chat_template(
             self.prompt, tokenize=False, add_generation_prompt=True
         )
-        outputs = self.pipe(
+        outputs = self.pipe.model.generate(
             prompt,
             do_sample=True,
             temperature=0.4,
