@@ -2,7 +2,12 @@ import json
 import os.path
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    pipeline,
+)
 
 
 class LLama3(object):
@@ -30,7 +35,7 @@ class LLama3(object):
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=torch.bfloat16,
         )
-        self.model = AutoModelForCausalLM.from_pretrained(
+        self.model_4bit = AutoModelForCausalLM.from_pretrained(
             self.model_id, quantization_config=bnb_config, device_map="auto"
         )
         self.tokenizer = AutoTokenizer.from_pretrained(
@@ -38,6 +43,9 @@ class LLama3(object):
         )
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.tokenizer.padding_side = "right"
+        self.pipe = pipeline(
+            "text-generation", model=self.model_4bit, tokenizer=self.tokenizer
+        )
 
     def load_prompt(self) -> list[dict[str, str]]:
         # Get Hakase Project Path
@@ -55,10 +63,10 @@ class LLama3(object):
 
     def generate_text(self, instruction: str) -> str:
         self.generate_instruction(instruction=instruction)
-        prompt = self.tokenizer.apply_chat_template(
+        prompt = self.pipe.tokenizer.apply_chat_template(
             self.prompt, tokenize=False, add_generation_prompt=True
         )
-        outputs = self.model.generate(
+        outputs = self.pipe(
             prompt,
             do_sample=True,
             temperature=0.4,
