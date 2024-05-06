@@ -59,7 +59,7 @@ class LLama3(object):
 
     def generate_instruction(self, instruction: str) -> None:
         self.prompt = self.load_prompt()
-        self.prompt.append({"role": "user", "content": f"{instruction}"})
+        self.prompt.extend({"role": "user", "content": f"{instruction}"})
 
     def generate_text(self, instruction: str) -> str:
         self.generate_instruction(instruction=instruction)
