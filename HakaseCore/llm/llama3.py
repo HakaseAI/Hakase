@@ -71,7 +71,7 @@ class LLama3(object):
             do_sample=True,
             temperature=0.4,
             top_p=0.9,
-            max_new_tokens=100,
+            max_new_tokens=10000,
             eos_token_id=[
                 self.tokenizer.eos_token_id,
                 self.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
