@@ -12,7 +12,7 @@ from transformers import (
 
 class LLama3(object):
     def __init__(self, accelerate_engine: str = "cuda", debug: bool = False) -> None:
-        self.prompt: list[dict[str, str]] = []
+        self.prompt: list[dict[str, str]] = self.load_prompt()
         self.model_id = "maum-ai/Llama-3-MAAL-8B-Instruct-v0.1"
         self.accelerate_engine = accelerate_engine
         if debug:
@@ -58,8 +58,7 @@ class LLama3(object):
         return prompt
 
     def generate_instruction(self, instruction: str) -> None:
-        self.prompt = self.load_prompt()
-        self.prompt.extend({"role": "user", "content": f"{instruction}"})
+        self.prompt.append({"role": "user", "content": f"{instruction}"})
 
     def generate_text(self, instruction: str) -> str:
         self.generate_instruction(instruction=instruction)
