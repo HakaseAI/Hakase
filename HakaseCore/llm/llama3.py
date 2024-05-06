@@ -2,10 +2,7 @@ import json
 import os.path
 
 import torch
-from transformers import AutoModelForCausalLM
-from transformers import AutoTokenizer
-from transformers import BitsAndBytesConfig
-from transformers import TextStreamer
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 class LLama3(object):
@@ -27,14 +24,11 @@ class LLama3(object):
                         f"{accelerate_engine} is not a valid accelerate_engine"
                     )
 
-        self.bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_compute_dtype=torch.bfloat16,
-        )
-        self.model = AutoModelForCausalLM.from_pretrained(
-            self.model_id, quantization_config=self.bnb_config, device_map="auto"
+        model = AutoModelForCausalLM.from_pretrained(self.model_id, device_map="auto")
+        self.model = torch.quantization.quantize_dynamic(
+            model,
+            {torch.nn.Linear},
+            dtype=torch.qint8,
         )
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_id, add_special_tokens=True
