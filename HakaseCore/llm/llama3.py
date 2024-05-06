@@ -66,11 +66,12 @@ class LLama3(object):
         prompt = self.pipe.tokenizer.apply_chat_template(
             self.prompt, tokenize=False, add_generation_prompt=True
         )
-        outputs = self.pipe.model.generate(
+        outputs = self.pipe(
             prompt,
             do_sample=True,
             temperature=0.4,
             top_p=0.9,
+            max_new_tokens=100,
             eos_token_id=[
                 self.tokenizer.eos_token_id,
                 self.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
