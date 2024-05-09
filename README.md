@@ -37,3 +37,6 @@ AI 버츄얼 스트리머 "Neuro-sama"를 클론 하는 프로젝트입니다.
 ## License
 위 프로젝트는 LGPL-2.1 라이선스를 적용합니다.
 > [License](./LICENSE)
+
+### Disclaimer
+**training 모듈은 본 라이선스를 적용하지 않습니다**
