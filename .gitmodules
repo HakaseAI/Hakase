@@ -1,0 +1,4 @@
+[submodule "training"]
+    path = training
+    url = https://github.com/zeroday0619/Llama-3-MAAL-8B-Hakase-Instruct-BaseCode-v0.1
+    branch = main
