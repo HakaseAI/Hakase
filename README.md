@@ -32,6 +32,7 @@ AI 버츄얼 스트리머 "Neuro-sama"를 클론 하는 프로젝트입니다.
 - [@Cellularhacker](https://github.com/Cellularhacker)
 > 프로젝트 일반 팀원
 - [@seung7361](https://github.com/seung7361)
+- [@yenru0](https://github.com/yenru0)
 - [@SeoEvan](https://github.com/SeoEvan)
 
 ## License
