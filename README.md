@@ -33,7 +33,6 @@ AI 버츄얼 스트리머 "Neuro-sama"를 클론 하는 프로젝트입니다.
 > 프로젝트 일반 팀원
 - [@seung7361](https://github.com/seung7361)
 - [@yenru0](https://github.com/yenru0)
-- [@SeoEvan](https://github.com/SeoEvan)
 
 ## License
 위 프로젝트는 LGPL-2.1 라이선스를 적용합니다.
